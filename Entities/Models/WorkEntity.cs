@@ -7,6 +7,7 @@ namespace Entities.Models
     [Table("Works")]
     public class WorkEntity : UniqueIdEntity
     {
+        public string JobName { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime? FactStartDate { get; set; }
         public DateTime? NewPlannedStartDate { get; set; }
@@ -18,7 +19,7 @@ namespace Entities.Models
         public decimal AddedCost { get; set; }
         public decimal AddedChildrenCost { get; set; }
         
-        public List<WorkWorkEntity> NextWorks { get; set; }
-        public List<WorkWorkEntity> PrevWorks { get; set; }
+        public List<WorkEntity> NextWorks { get; set; }
+        public List<WorkEntity> PrevWorks { get; set; }
     }
 }

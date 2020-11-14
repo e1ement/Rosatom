@@ -15,19 +15,6 @@ namespace Entities
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<WorkWorkEntity>()
-                .HasKey(u => new { u.NextWorkId, u.PrevWorkId });
-
-            builder.Entity<WorkEntity>()
-                .HasMany(u => u.NextWorks)
-                .WithOne(f => f.PrevWork)
-                .HasForeignKey(fk => fk.PrevWorkId);
-
-            builder.Entity<WorkEntity>()
-                .HasMany(u => u.PrevWorks)
-                .WithOne(f => f.NextWork)
-                .HasForeignKey(fk => fk.NextWorkId);
         }
     }
 }

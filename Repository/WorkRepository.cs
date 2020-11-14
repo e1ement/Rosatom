@@ -63,14 +63,15 @@ namespace Repository
             var mainWorkElement = new WorkEntity
             {
                 Id = Guid.NewGuid(),
+                JobName = "Работа",
                 PlannedStartDate = DateTime.Now,
                 DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                 IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                 NormDuration = new Random().Next(6, 20),
                 MinimalDuration = new Random().Next(1, 5),
                 MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                NextWorks = new List<WorkWorkEntity>(),
-                PrevWorks = new List<WorkWorkEntity>()
+                NextWorks = new List<WorkEntity>(),
+                PrevWorks = new List<WorkEntity>()
             };
 
             result.Add(mainWorkElement);
@@ -81,19 +82,20 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
+                    JobName = "Работа",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    NextWorks = new List<WorkWorkEntity>(),
-                    PrevWorks = new List<WorkWorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 result.Add(newElement);
                 parentIdsList.Add(newElement.Id);
-                newElement.NextWorks.Add(new WorkWorkEntity(){NextWorkId = mainWorkElement.Id, PrevWorkId = newElement.Id});
+                newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
             }
 
             j *= 45;
@@ -103,14 +105,15 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
+                    JobName = "Работа",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    NextWorks = new List<WorkWorkEntity>(),
-                    PrevWorks = new List<WorkWorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -122,11 +125,11 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    if (newElement.NextWorks.Any(n => n.Id == id))
                     {
                         continue;
                     }
-                    newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
+                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
 
                 result.Add(newElement);
@@ -140,14 +143,15 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
+                    JobName = "Работа",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    NextWorks = new List<WorkWorkEntity>(),
-                    PrevWorks = new List<WorkWorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -159,11 +163,11 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    if (newElement.NextWorks.Any(n => n.Id == id))
                     {
                         continue;
                     }
-                    newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
+                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
 
                 result.Add(newElement);
@@ -177,14 +181,15 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
+                    JobName = "Работа",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    NextWorks = new List<WorkWorkEntity>(),
-                    PrevWorks = new List<WorkWorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -196,42 +201,52 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    if (newElement.NextWorks.Any(n => n.Id == id))
                     {
                         continue;
                     }
-                    newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
+                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
 
                 result.Add(newElement);
                 parentIdsList.Add(newElement.Id);
             }
 
-            result.Where(x => x.NextWorks == null || !x.NextWorks.Any())
+            result.Where(x => (x.NextWorks == null || !x.NextWorks.Any()) && x.Id != mainWorkElement.Id)
                 .ToList()
                 .ForEach(item =>
                 {
-                    item.NextWorks.Add(new WorkWorkEntity() { NextWorkId = mainWorkElement.Id, PrevWorkId = item.Id });
+                    item.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
                 });
 
-            SetDates(result);
             return result;
         }
 
         public async Task<IEnumerable<WorkDto>> GetByIdAsync(Guid? id, bool trackChanges)
         {
-            var entities = FindAll(trackChanges);
-            if (id.HasValue)
+            try
             {
-                entities = entities.Where(x => x.Id == id.Value);
+                if (!id.HasValue)
+                {
+                    var mainEntity = await FindByCondition(e => !e.PrevWorks.Select(p => p.Id).Any(), trackChanges)
+                        .FirstOrDefaultAsync();
+                    if (mainEntity != null)
+                        id = mainEntity.Id;
+                }
+
+                var entity = await FindByCondition(e => e.Id == id, trackChanges)
+                    .Include(e => e.PrevWorks)
+                    .FirstOrDefaultAsync();
+
+                var result = new List<WorkDto>();
+                entity.PrevWorks.ForEach(p => result.Add(new WorkDto(p)));
+                return result;
             }
-
-            entities = entities
-                .Include(i => i.PrevWorks);
-
-            var result = await entities.ToListAsync();
-
-            return result.Select(s => new WorkDto(s));
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task CreateCollectionAsync(IEnumerable<WorkEntity> works)
@@ -250,15 +265,14 @@ namespace Repository
 
         private static void SetDates(IEnumerable<WorkEntity> works)
         {
-            var mainWork = works.FirstOrDefault(w => w.NextWorks == null 
-                                                     || !w.NextWorks.Any());
-            if (mainWork == null)
-            {
-                return;
-            }
+            var mainWork = works.FirstOrDefault(w => w.NextWorks == null || !w.NextWorks.Any());
 
-            var prevWorks = mainWork.PrevWorks;
-            SetPlannedDate(prevWorks.Select(e => e.PrevWork).ToList(), mainWork.PlannedStartDate);
+            if (mainWork != null)
+            {
+                var prevWorks = mainWork.PrevWorks;
+                var date = mainWork.PlannedStartDate;
+                SetPlannedDate(prevWorks, date);
+            }
         }
 
         private static void SetPlannedDate(List<WorkEntity> prevWorks, DateTime date)
@@ -272,7 +286,7 @@ namespace Repository
 
             foreach (var work in prevWorks.Where(work => work.PrevWorks != null && work.PrevWorks.Any()))
             {
-                SetPlannedDate(work.PrevWorks.Select(e => e.PrevWork).ToList(), minDate);
+                SetPlannedDate(work.PrevWorks, minDate);
             }
         }
     }

@@ -10,30 +10,30 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20201114114616_InitialCreate")]
+    [Migration("20201114145417_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("Entities.Models.ValueEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("Id")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("Description")
+                        .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
-                        .HasMaxLength(30);
+                        .HasColumnName("Description");
 
                     b.HasKey("Id");
 
@@ -61,6 +61,9 @@ namespace Entities.Migrations
                     b.Property<decimal>("IncDayCost")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("JobName")
+                        .HasColumnType("text");
+
                     b.Property<int>("MinimalDuration")
                         .HasColumnType("integer");
 
@@ -81,32 +84,32 @@ namespace Entities.Migrations
                     b.ToTable("Works");
                 });
 
-            modelBuilder.Entity("Entities.Models.WorkWorkEntity", b =>
+            modelBuilder.Entity("WorkEntityWorkEntity", b =>
                 {
-                    b.Property<Guid>("NextWorkId")
+                    b.Property<Guid>("NextWorksId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PrevWorkId")
+                    b.Property<Guid>("PrevWorksId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("NextWorkId", "PrevWorkId");
+                    b.HasKey("NextWorksId", "PrevWorksId");
 
-                    b.HasIndex("PrevWorkId");
+                    b.HasIndex("PrevWorksId");
 
-                    b.ToTable("WorkWorkEntity");
+                    b.ToTable("WorkEntityWorkEntity");
                 });
 
-            modelBuilder.Entity("Entities.Models.WorkWorkEntity", b =>
+            modelBuilder.Entity("WorkEntityWorkEntity", b =>
                 {
-                    b.HasOne("Entities.Models.WorkEntity", "NextWork")
-                        .WithMany("PrevWorks")
-                        .HasForeignKey("NextWorkId")
+                    b.HasOne("Entities.Models.WorkEntity", null)
+                        .WithMany()
+                        .HasForeignKey("NextWorksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.WorkEntity", "PrevWork")
-                        .WithMany("NextWorks")
-                        .HasForeignKey("PrevWorkId")
+                    b.HasOne("Entities.Models.WorkEntity", null)
+                        .WithMany()
+                        .HasForeignKey("PrevWorksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

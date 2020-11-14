@@ -8,6 +8,7 @@ namespace Entities.Dto
 {
     public class WorkDto : UniqueIdObject
     {
+        public string JobName { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime? NewPlannedStartDate { get; set; }
         public DateTime? FactStartDate { get; set; }
@@ -26,6 +27,8 @@ namespace Entities.Dto
 
         public WorkDto()
         {
+            NextWorks = new List<WorkDto>();
+            PrevWorks = new List<WorkDto>();
         }
 
         public WorkDto(WorkEntity entity) : base(entity)
@@ -35,6 +38,7 @@ namespace Entities.Dto
                 return;
             }
 
+            JobName = entity.JobName;
             PlannedStartDate = entity.PlannedStartDate;
             FactStartDate = entity.FactStartDate;
             IncDayCost = entity.IncDayCost;
@@ -46,14 +50,16 @@ namespace Entities.Dto
             AddedChildrenCost = entity.AddedChildrenCost;
             NewPlannedStartDate = entity.NewPlannedStartDate;
 
-            if (entity.NextWorks.Any())
+            if (entity.NextWorks != null 
+                && entity.NextWorks.Any())
             {
-                entity.NextWorks.ForEach(e => NextWorks.Add(new WorkDto(e.NextWork)));
+                entity.NextWorks.ForEach(e => NextWorks.Add(new WorkDto(e)));
             }
 
-            if (entity.PrevWorks.Any())
+            if ( entity.PrevWorks != null 
+                 && entity.PrevWorks.Any())
             {
-                entity.PrevWorks.ForEach(e => PrevWorks.Add(new WorkDto(e.PrevWork)));
+                entity.PrevWorks.ForEach(e => PrevWorks.Add(new WorkDto(e)));
             }
         }
 
