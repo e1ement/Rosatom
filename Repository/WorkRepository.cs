@@ -219,7 +219,7 @@ namespace Repository
                     item.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
                 });
 
-            SetDates(result);
+            //SetDates(result);
 
             return result;
         }
@@ -271,14 +271,19 @@ namespace Repository
 
             if (mainWork != null)
             {
-                var prevWorks = mainWork.PrevWorks;
+                var prevWorks = works.Where(w => w.NextWorks.Select(s => s.Id).ToList().Contains(mainWork.Id)).ToList();
                 var date = mainWork.PlannedStartDate;
-                SetPlannedDate(prevWorks, date);
+                SetPlannedDate(prevWorks, date, works);
             }
         }
 
-        private static void SetPlannedDate(List<WorkEntity> prevWorks, DateTime date)
+        private static void SetPlannedDate(List<WorkEntity> prevWorks, DateTime date, IEnumerable<WorkEntity> works)
         {
+            if (prevWorks == null || !prevWorks.Any())
+            {
+                return;
+            }
+
             foreach (var work in prevWorks)
             {
                 work.PlannedStartDate = date.AddDays(-1).AddDays(work.NormDuration);
@@ -286,9 +291,10 @@ namespace Repository
 
             var minDate = prevWorks.Min(p => p.PlannedStartDate);
 
-            foreach (var work in prevWorks.Where(work => work.PrevWorks != null && work.PrevWorks.Any()))
+            foreach (var work in prevWorks)
             {
-                SetPlannedDate(work.PrevWorks, minDate);
+                var tmp = works.Where(w => w.NextWorks.Select(s => s.Id).ToList().Contains(work.Id)).ToList();
+                SetPlannedDate(tmp, minDate, works);
             }
         }
     }
