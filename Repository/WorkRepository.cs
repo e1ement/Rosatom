@@ -136,7 +136,7 @@ namespace Repository
                 parentIdsList.Add(newElement.Id);
             }
 
-            j *= 45;
+            j *= 5;
 
             for (var i = 0; i < j; i++)
             {
@@ -219,7 +219,7 @@ namespace Repository
                     item.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
                 });
 
-            //SetDates(result);
+            SetDates(result);
 
             return result;
         }
@@ -288,7 +288,7 @@ namespace Repository
             if (workForUpdate.FactStartDate.HasValue)
                 entity.FactStartDate = workForUpdate.FactStartDate;
 
-
+            //TODO: получить все зависимые работы и апдейтнуть
 
             return await SaveChanges();
         }
