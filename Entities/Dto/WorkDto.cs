@@ -1,13 +1,13 @@
-﻿using Entities.Common;
-using Entities.Models;
+﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Entities.Dto
 {
-    public class WorkDto : UniqueIdObject
+    public class WorkDto
     {
+        public Guid Id { get; set; }
         public string JobName { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime? NewPlannedStartDate { get; set; }
@@ -20,24 +20,19 @@ namespace Entities.Dto
         public decimal AddedCost { get; set; }
         public decimal AddedChildrenCost { get; set; }
 
-        public List<WorkDto> NextWorks { get; set; }
-        public List<WorkDto> PrevWorks { get; set; }
+        public List<WorkDto> NextWorks { get; set; } = new List<WorkDto>();
+        public List<WorkDto> PrevWorks { get; set; } = new List<WorkDto>();
 
-        public decimal SumAddedCost => AddedChildrenCost + AddedCost;
+        //public decimal SumAddedCost => AddedChildrenCost + AddedCost;
 
-        public WorkDto()
-        {
-            NextWorks = new List<WorkDto>();
-            PrevWorks = new List<WorkDto>();
-        }
-
-        public WorkDto(WorkEntity entity) : base(entity)
+        public WorkDto(WorkEntity entity)
         {
             if (entity == null)
             {
                 return;
             }
 
+            Id = entity.Id;
             JobName = entity.JobName;
             PlannedStartDate = entity.PlannedStartDate;
             FactStartDate = entity.FactStartDate;
@@ -50,16 +45,16 @@ namespace Entities.Dto
             AddedChildrenCost = entity.AddedChildrenCost;
             NewPlannedStartDate = entity.NewPlannedStartDate;
 
-            if (entity.NextWorks != null 
-                && entity.NextWorks.Any())
-            {
-                entity.NextWorks.ForEach(e => NextWorks.Add(new WorkDto(e)));
-            }
+            //if (entity.NextWorks != null 
+            //    && entity.NextWorks.Any())
+            //{
+            //    entity.NextWorks.ForEach(e => NextWorks.Add(new WorkDto(e)));
+            //}
 
             if ( entity.PrevWorks != null 
                  && entity.PrevWorks.Any())
             {
-                entity.PrevWorks.ForEach(e => PrevWorks.Add(new WorkDto(e)));
+                PrevWorks.AddRange(entity.PrevWorks.Select(s => new WorkDto(s)));
             }
         }
 

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
     [Table("Works")]
-    public class WorkEntity : UniqueIdEntity
+    public class WorkEntity : IEntity
     {
+        [Key]
+        public Guid Id { get; set; }
         public string JobName { get; set; }
         public DateTime PlannedStartDate { get; set; }
         public DateTime? FactStartDate { get; set; }

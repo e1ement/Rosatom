@@ -34,19 +34,12 @@ namespace Repository
 
         public async Task Create(T entity)
         {
-            GenerateGuidId(entity);
             await _repositoryContext.Set<T>().AddAsync(entity);
         }
 
         public async Task CreateCollection(IEnumerable<T> entities)
         {
-            var list = entities.ToList();
-            foreach (var entity in list)
-            {
-                GenerateGuidId(entity);
-            }
-
-            await _repositoryContext.Set<T>().AddRangeAsync(list);
+            await _repositoryContext.Set<T>().AddRangeAsync(entities);
         }
 
         public void Update(T entity)
@@ -57,15 +50,6 @@ namespace Repository
         public void Delete(T entity)
         {
             _repositoryContext.Set<T>().Remove(entity);
-        }
-
-        private static void GenerateGuidId(T entity)
-        {
-            if (entity is UniqueIdEntity guidBasedEntity
-                && guidBasedEntity.Id == Guid.Empty)
-            {
-                guidBasedEntity.Id = Guid.NewGuid();
-            }
         }
 
         public async Task<int> SaveChanges()

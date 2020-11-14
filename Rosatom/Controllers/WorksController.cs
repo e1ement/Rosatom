@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Rosatom.Controllers
 {
@@ -18,11 +19,11 @@ namespace Rosatom.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]Guid? id)
+        public async Task<IActionResult> Get([FromQuery]Guid? id)
         {
             try
             {
-                var data = _repository.WorkRepository.GetByIdAsync(id, false);
+                var data = await _repository.WorkRepository.GetByIdAsync(id, false);
 
                 return Ok(data);
             }
@@ -34,12 +35,12 @@ namespace Rosatom.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult UpdateData()
+        public async Task<IActionResult> UpdateData()
         {
             try
             {
                 var data = _repository.WorkRepository.GenerateData();
-                _repository.WorkRepository.CreateCollectionAsync(data);
+                await _repository.WorkRepository.CreateCollectionAsync(data);
 
                 return Created(string.Empty, null);
             }

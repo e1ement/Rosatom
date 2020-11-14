@@ -240,9 +240,7 @@ namespace Repository
                     .Include(e => e.PrevWorks)
                     .FirstOrDefaultAsync();
 
-                var result = new List<WorkDto>();
-                entity.PrevWorks.ForEach(p => result.Add(new WorkDto(p)));
-                return result;
+                return entity.PrevWorks.Select(workEntity => new WorkDto(workEntity)).ToList();
             }
             catch (Exception e)
             {
