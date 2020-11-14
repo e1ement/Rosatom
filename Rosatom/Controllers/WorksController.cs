@@ -17,7 +17,7 @@ namespace Rosatom.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult Get([FromQuery]Guid? id)
         {
             try
