@@ -2,8 +2,10 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -30,10 +32,21 @@ namespace Repository
                 : _repositoryContext.Set<T>().Where(expression);
         }
 
-        public void Create(T entity)
+        public async Task Create(T entity)
         {
             GenerateGuidId(entity);
-            _repositoryContext.Set<T>().Add(entity);
+            await _repositoryContext.Set<T>().AddAsync(entity);
+        }
+
+        public async Task CreateCollection(IEnumerable<T> entities)
+        {
+            var list = entities.ToList();
+            foreach (var entity in list)
+            {
+                GenerateGuidId(entity);
+            }
+
+            await _repositoryContext.Set<T>().AddRangeAsync(list);
         }
 
         public void Update(T entity)
@@ -53,6 +66,11 @@ namespace Repository
             {
                 guidBasedEntity.Id = Guid.NewGuid();
             }
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            return await _repositoryContext.SaveChangesAsync();
         }
     }
 }

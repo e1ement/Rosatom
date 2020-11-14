@@ -5,6 +5,8 @@ using Entities;
 using Entities.Dto;
 using Entities.Models;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -52,7 +54,7 @@ namespace Repository
             return result;
         }
 
-        public IEnumerable<WorkDto> GenerateData()
+        public IEnumerable<WorkEntity> GenerateData()
         {
             var result = new List<WorkEntity>();
             var j = 1;
@@ -60,13 +62,15 @@ namespace Repository
 
             var mainWorkElement = new WorkEntity
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 PlannedStartDate = DateTime.Now,
                 DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                 IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                 NormDuration = new Random().Next(6, 20),
                 MinimalDuration = new Random().Next(1, 5),
-                MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}")
+                MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+                NextWorks = new List<WorkWorkEntity>(),
+                PrevWorks = new List<WorkWorkEntity>()
             };
 
             result.Add(mainWorkElement);
@@ -76,13 +80,15 @@ namespace Repository
             {
                 var newElement = new WorkEntity
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
-                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}")
+                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+                    NextWorks = new List<WorkWorkEntity>(),
+                    PrevWorks = new List<WorkWorkEntity>()
                 };
 
                 result.Add(newElement);
@@ -96,13 +102,15 @@ namespace Repository
             {
                 var newElement = new WorkEntity
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
-                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}")
+                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+                    NextWorks = new List<WorkWorkEntity>(),
+                    PrevWorks = new List<WorkWorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -127,13 +135,15 @@ namespace Repository
             {
                 var newElement = new WorkEntity
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
-                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}")
+                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+                    NextWorks = new List<WorkWorkEntity>(),
+                    PrevWorks = new List<WorkWorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -158,13 +168,15 @@ namespace Repository
             {
                 var newElement = new WorkEntity
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
-                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}")
+                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+                    NextWorks = new List<WorkWorkEntity>(),
+                    PrevWorks = new List<WorkWorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -191,7 +203,29 @@ namespace Repository
                 });
 
             SetDates(result);
+            return result;
+        }
+
+        public async Task<IEnumerable<WorkDto>> GetByIdAsync(Guid? id, bool trackChanges)
+        {
+            var entities = FindAll(trackChanges);
+            if (id.HasValue)
+            {
+                entities = entities.Where(x => x.Id == id.Value);
+            }
+
+            entities = entities
+                .Include(i => i.PrevWorks);
+
+            var result = await entities.ToListAsync();
+
             return result.Select(s => new WorkDto(s));
+        }
+
+        public async Task CreateCollectionAsync(IEnumerable<WorkEntity> works)
+        {
+            await CreateCollection(works);
+            await SaveChanges();
         }
 
         private static void SetDates(IEnumerable<WorkEntity> works)

@@ -15,7 +15,6 @@ namespace Rosatom
             using (var scope = host.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
-
                 var context = serviceProvider.GetRequiredService<RepositoryContext>();
                 await context.Database.MigrateAsync();
 

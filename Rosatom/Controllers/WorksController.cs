@@ -18,17 +18,34 @@ namespace Rosatom.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery]Guid? id)
         {
             try
             {
-                var data = _repository.WorkRepository.GenerateData();
+                var data = _repository.WorkRepository.GetByIdAsync(id, false);
 
                 return Ok(data);
             }
             catch (Exception e)
             {
                 _logger.LogError($"Something went wrong in the {nameof(Get)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("update")]
+        public IActionResult UpdateData()
+        {
+            try
+            {
+                var data = _repository.WorkRepository.GenerateData();
+                _repository.WorkRepository.CreateCollectionAsync(data);
+
+                return Created(string.Empty, null);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(UpdateData)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }

@@ -12,7 +12,7 @@ namespace Entities
             // Define test Value data
             if (!await context.Values.AnyAsync())
             {
-                List<ValueEntity> values = new List<ValueEntity>
+                var values = new List<ValueEntity>
                 {
                     new ValueEntity
                     {
