@@ -219,7 +219,7 @@ namespace Repository
                     item.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
                 });
 
-            SetDates(result);
+            //SetDates(result);
 
             return result;
         }
