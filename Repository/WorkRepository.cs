@@ -26,8 +26,8 @@ namespace Repository
 
             var daysDifference = work.NewPlannedStartDate.Value.Subtract(work.PlannedStartDate).Days;
 
-            work.AddedCost = daysDifference > 0 
-                ? work.IncDayCost * daysDifference 
+            work.AddedCost = daysDifference > 0
+                ? work.IncDayCost * daysDifference
                 : work.DecDayCost * daysDifference;
         }
 
@@ -35,7 +35,7 @@ namespace Repository
         {
             decimal result = 0;
 
-            if (work.PrevWorks == null 
+            if (work.PrevWorks == null
                 || !work.PrevWorks.Any())
             {
                 return result;
@@ -44,7 +44,7 @@ namespace Repository
             foreach (var cWork in work.PrevWorks)
             {
                 result += cWork.AddedCost;
-                if (cWork.PrevWorks != null 
+                if (cWork.PrevWorks != null
                     && cWork.PrevWorks.Any())
                 {
                     result += CalculateChildWorksCost(cWork);
@@ -119,7 +119,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 40)
+                    if (tmp <= 5)
                     {
                         continue;
                     }
@@ -157,7 +157,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 40)
+                    if (tmp <= 5)
                     {
                         continue;
                     }
@@ -195,7 +195,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 40)
+                    if (tmp <= 5)
                     {
                         continue;
                     }
@@ -230,10 +230,10 @@ namespace Repository
             {
                 if (!id.HasValue)
                 {
-                    var mainEntity = await FindByCondition(e => !e.PrevWorks.Select(p => p.Id).Any(), trackChanges)
-                        .FirstOrDefaultAsync();
+                    var mainEntity = await FindByCondition(e => !e.NextWorks.Select(p => p.Id).Any(), trackChanges)
+                        .ToListAsync();
                     if (mainEntity != null)
-                        id = mainEntity.Id;
+                        id = mainEntity.FirstOrDefault().Id;
                 }
 
                 var entity = await FindByCondition(e => e.Id == id, trackChanges)

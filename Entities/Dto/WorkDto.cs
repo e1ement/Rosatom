@@ -44,17 +44,36 @@ namespace Entities.Dto
             AddedCost = entity.AddedCost;
             AddedChildrenCost = entity.AddedChildrenCost;
             NewPlannedStartDate = entity.NewPlannedStartDate;
+        }
 
-            //if (entity.NextWorks != null 
-            //    && entity.NextWorks.Any())
-            //{
-            //    entity.NextWorks.ForEach(e => NextWorks.Add(new WorkDto(e)));
-            //}
-
-            if ( entity.PrevWorks != null 
-                 && entity.PrevWorks.Any())
+        public WorkDto(WorkEntity entity, List<WorkEntity> nextWorks, List<WorkEntity> prevWorks)
+        {
+            if (entity == null)
             {
-                PrevWorks.AddRange(entity.PrevWorks.Select(s => new WorkDto(s)));
+                return;
+            }
+
+            Id = entity.Id;
+            JobName = entity.JobName;
+            PlannedStartDate = entity.PlannedStartDate;
+            FactStartDate = entity.FactStartDate;
+            IncDayCost = entity.IncDayCost;
+            DecDayCost = entity.DecDayCost;
+            NormDuration = entity.NormDuration;
+            MinimalDuration = entity.MinimalDuration;
+            MinimalDurationCost = entity.MinimalDurationCost;
+            AddedCost = entity.AddedCost;
+            AddedChildrenCost = entity.AddedChildrenCost;
+            NewPlannedStartDate = entity.NewPlannedStartDate;
+
+            if (nextWorks != null)
+            {
+                NextWorks.AddRange(nextWorks.Select(s => new WorkDto(s)));
+            }
+
+            if (prevWorks != null)
+            {
+                PrevWorks.AddRange(prevWorks.Select(s => new WorkDto(s)));
             }
         }
 
