@@ -63,7 +63,7 @@ namespace Repository
             var mainWorkElement = new WorkEntity
             {
                 Id = Guid.NewGuid(),
-                JobName = "Работа",
+                JobName = $"Работа {j}",
                 PlannedStartDate = DateTime.Now,
                 DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                 IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
@@ -82,7 +82,7 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
-                    JobName = "Работа",
+                    JobName = $"Работа {i}{j}",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
@@ -105,7 +105,7 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
-                    JobName = "Работа",
+                    JobName = $"Работа {i}{j}",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
@@ -143,7 +143,7 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
-                    JobName = "Работа",
+                    JobName = $"Работа {i}{j}",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
@@ -181,7 +181,7 @@ namespace Repository
                 var newElement = new WorkEntity
                 {
                     Id = Guid.NewGuid(),
-                    JobName = "Работа",
+                    JobName = $"Работа {i}{j}",
                     PlannedStartDate = DateTime.Now,
                     DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
                     IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
