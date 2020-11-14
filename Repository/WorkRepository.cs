@@ -119,7 +119,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 2)
+                    if (tmp <= 5)
                     {
                         continue;
                     }
@@ -157,7 +157,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 2)
+                    if (tmp <= 5)
                     {
                         continue;
                     }
@@ -174,43 +174,43 @@ namespace Repository
                 parentIdsList.Add(newElement.Id);
             }
 
-            j *= 45;
+            //j *= 45;
 
-            for (var i = 0; i < j; i++)
-            {
-                var newElement = new WorkEntity
-                {
-                    Id = Guid.NewGuid(),
-                    JobName = $"Работа {i}{j}",
-                    PlannedStartDate = DateTime.Now,
-                    DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    NormDuration = new Random().Next(6, 20),
-                    MinimalDuration = new Random().Next(1, 5),
-                    MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    ChildWorks = new List<WorkEntity>(),
-                    ParentWorks = new List<WorkEntity>()
-                };
+            //for (var i = 0; i < j; i++)
+            //{
+            //    var newElement = new WorkEntity
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        JobName = $"Работа {i}{j}",
+            //        PlannedStartDate = DateTime.Now,
+            //        DecDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+            //        IncDayCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+            //        NormDuration = new Random().Next(6, 20),
+            //        MinimalDuration = new Random().Next(1, 5),
+            //        MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
+            //        ChildWorks = new List<WorkEntity>(),
+            //        ParentWorks = new List<WorkEntity>()
+            //    };
 
-                for (var k = 0; k < 4; k++)
-                {
-                    var tmp = new Random().Next(1, 100);
-                    if (tmp <= 2)
-                    {
-                        continue;
-                    }
+            //    for (var k = 0; k < 4; k++)
+            //    {
+            //        var tmp = new Random().Next(1, 100);
+            //        if (tmp <= 2)
+            //        {
+            //            continue;
+            //        }
 
-                    var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.ChildWorks.Any(n => n.Id == id))
-                    {
-                        continue;
-                    }
-                    newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == id));
-                }
+            //        var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+            //        if (newElement.ChildWorks.Any(n => n.Id == id))
+            //        {
+            //            continue;
+            //        }
+            //        newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == id));
+            //    }
 
-                result.Add(newElement);
-                parentIdsList.Add(newElement.Id);
-            }
+            //    result.Add(newElement);
+            //    parentIdsList.Add(newElement.Id);
+            //}
 
             result.Where(x => (x.ChildWorks == null || !x.ChildWorks.Any()) && x.Id != mainWorkElement.Id)
                 .ToList()
