@@ -35,17 +35,17 @@ namespace Repository
         {
             decimal result = 0;
 
-            if (work.ParentWorks == null
-                || !work.ParentWorks.Any())
+            if (work.PrevWorks == null
+                || !work.PrevWorks.Any())
             {
                 return result;
             }
 
-            foreach (var cWork in work.ParentWorks)
+            foreach (var cWork in work.PrevWorks)
             {
                 result += cWork.AddedCost;
-                if (cWork.ParentWorks != null
-                    && cWork.ParentWorks.Any())
+                if (cWork.PrevWorks != null
+                    && cWork.PrevWorks.Any())
                 {
                     result += CalculateChildWorksCost(cWork);
                 }
@@ -70,8 +70,8 @@ namespace Repository
                 NormDuration = new Random().Next(6, 20),
                 MinimalDuration = new Random().Next(1, 5),
                 MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                ChildWorks = new List<WorkEntity>(),
-                ParentWorks = new List<WorkEntity>()
+                NextWorks = new List<WorkEntity>(),
+                PrevWorks = new List<WorkEntity>()
             };
 
             result.Add(mainWorkElement);
@@ -89,13 +89,13 @@ namespace Repository
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    ChildWorks = new List<WorkEntity>(),
-                    ParentWorks = new List<WorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 result.Add(newElement);
                 parentIdsList.Add(newElement.Id);
-                newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
+                newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
             }
 
             j *= 45;
@@ -112,8 +112,8 @@ namespace Repository
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    ChildWorks = new List<WorkEntity>(),
-                    ParentWorks = new List<WorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -125,11 +125,11 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.ChildWorks.Any(n => n.Id == id))
+                    if (newElement.NextWorks.Any(n => n.Id == id))
                     {
                         continue;
                     }
-                    newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == id));
+                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
 
                 result.Add(newElement);
@@ -150,8 +150,8 @@ namespace Repository
                     NormDuration = new Random().Next(6, 20),
                     MinimalDuration = new Random().Next(1, 5),
                     MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-                    ChildWorks = new List<WorkEntity>(),
-                    ParentWorks = new List<WorkEntity>()
+                    NextWorks = new List<WorkEntity>(),
+                    PrevWorks = new List<WorkEntity>()
                 };
 
                 for (var k = 0; k < 4; k++)
@@ -163,11 +163,11 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.ChildWorks.Any(n => n.Id == id))
+                    if (newElement.NextWorks.Any(n => n.Id == id))
                     {
                         continue;
                     }
-                    newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == id));
+                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
 
                 result.Add(newElement);
@@ -188,8 +188,8 @@ namespace Repository
             //        NormDuration = new Random().Next(6, 20),
             //        MinimalDuration = new Random().Next(1, 5),
             //        MinimalDurationCost = decimal.Parse($"{new Random().NextDouble() * 100:0.##}"),
-            //        ChildWorks = new List<WorkEntity>(),
-            //        ParentWorks = new List<WorkEntity>()
+            //        NextWorks = new List<WorkEntity>(),
+            //        PrevWorks = new List<WorkEntity>()
             //    };
 
             //    for (var k = 0; k < 4; k++)
@@ -201,22 +201,22 @@ namespace Repository
             //        }
 
             //        var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-            //        if (newElement.ChildWorks.Any(n => n.Id == id))
+            //        if (newElement.NextWorks.Any(n => n.Id == id))
             //        {
             //            continue;
             //        }
-            //        newElement.ChildWorks.Add(result.FirstOrDefault(r => r.Id == id));
+            //        newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
             //    }
 
             //    result.Add(newElement);
             //    parentIdsList.Add(newElement.Id);
             //}
 
-            result.Where(x => (x.ChildWorks == null || !x.ChildWorks.Any()) && x.Id != mainWorkElement.Id)
+            result.Where(x => (x.NextWorks == null || !x.NextWorks.Any()) && x.Id != mainWorkElement.Id)
                 .ToList()
                 .ForEach(item =>
                 {
-                    item.ChildWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
+                    item.NextWorks.Add(result.FirstOrDefault(r => r.Id == mainWorkElement.Id));
                 });
 
             SetDates(result);
@@ -230,7 +230,7 @@ namespace Repository
             {
                 if (!id.HasValue)
                 {
-                    var mainEntity = await FindByCondition(e => !e.ChildWorks.Select(p => p.Id).Any(), trackChanges)
+                    var mainEntity = await FindByCondition(e => !e.NextWorks.Select(p => p.Id).Any(), trackChanges)
                         .FirstOrDefaultAsync();
                     if (mainEntity != null)
                         id = mainEntity.Id;
@@ -238,10 +238,10 @@ namespace Repository
                 }
 
                 var entity = await FindByCondition(e => e.Id == id, trackChanges)
-                    .Include(e => e.ParentWorks)
+                    .Include(e => e.PrevWorks)
                     .FirstOrDefaultAsync();
 
-                return entity.ParentWorks.Select(workEntity => new WorkDto(workEntity)).ToList();
+                return entity.PrevWorks.Select(workEntity => new WorkDto(workEntity)).ToList();
             }
             catch (Exception e)
             {
@@ -264,6 +264,35 @@ namespace Repository
             }
         }
 
+        public async Task<int> UpdateAsync(WorkForUpdateDto workForUpdate)
+        {
+            var entity = await FindByCondition(x => x.Id == workForUpdate.Id, true)
+                .Include(i => i.NextWorks)
+                .Include(i => i.PrevWorks)
+                .FirstOrDefaultAsync();
+
+            var parentWorks = entity.PrevWorks;
+            if (parentWorks != null && parentWorks.Any())
+            {
+                var possibleDateList =
+                    entity.PrevWorks.Select(s => s.PlannedStartDate.AddDays(s.NormDuration)).ToList();
+                var maxPossibleDate = possibleDateList.Max(i => i);
+
+                if (workForUpdate.NewPlannedStartDate.HasValue && workForUpdate.NewPlannedStartDate < maxPossibleDate)
+                {
+                    return 0;
+                }
+            }
+
+            entity.NewPlannedStartDate = workForUpdate.NewPlannedStartDate;
+            if (workForUpdate.FactStartDate.HasValue)
+                entity.FactStartDate = workForUpdate.FactStartDate;
+
+
+
+            return await SaveChanges();
+        }
+
         private static void SetDates(List<WorkEntity> works)
         {
             if (works == null || !works.Any())
@@ -271,13 +300,13 @@ namespace Repository
                 return;
             }
 
-            var mainWork = works.FirstOrDefault(w => w.ChildWorks == null || !w.ChildWorks.Any());
+            var mainWork = works.FirstOrDefault(w => w.NextWorks == null || !w.NextWorks.Any());
             if (mainWork == null)
             {
                 return;
             }
 
-            var prevWorkList = works.Where(w => w.ChildWorks.Select(s => s.Id).ToList().Contains(mainWork.Id))
+            var prevWorkList = works.Where(w => w.NextWorks.Select(s => s.Id).ToList().Contains(mainWork.Id))
                 .ToList();
             var date = mainWork.PlannedStartDate;
             SetPlannedDate(prevWorkList, date, works);
@@ -299,7 +328,7 @@ namespace Repository
 
             foreach (var work in prevWorks)
             {
-                var tmp = works.Where(w => w.ChildWorks.Select(s => s.Id).ToList().Contains(work.Id)).ToList();
+                var tmp = works.Where(w => w.NextWorks.Select(s => s.Id).ToList().Contains(work.Id)).ToList();
                 SetPlannedDate(tmp, minDate, works);
             }
         }

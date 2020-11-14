@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Entities.Dto;
 
 namespace Rosatom.Controllers
 {
@@ -30,6 +31,26 @@ namespace Rosatom.Controllers
             catch (Exception e)
             {
                 _logger.LogError($"Something went wrong in the {nameof(Get)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> Update([FromBody] WorkForUpdateDto workForUpdate)
+        {
+            try
+            {
+                var result = await _repository.WorkRepository.UpdateAsync(workForUpdate);
+                if (result == 0)
+                {
+                    return BadRequest();
+                }
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(Update)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }

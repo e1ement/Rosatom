@@ -13,5 +13,6 @@ namespace Contracts
         IEnumerable<WorkEntity> GenerateData();
         Task<IEnumerable<WorkDto>> GetByIdAsync(Guid? id, bool trackChanges);
         Task CreateCollectionAsync(IEnumerable<WorkEntity> works);
+        Task<int> UpdateAsync(WorkForUpdateDto workForUpdate);
     }
 }

@@ -20,8 +20,8 @@ namespace Entities.Dto
         public decimal AddedCost { get; set; }
         public decimal AddedChildrenCost { get; set; }
 
-        public List<WorkDto> ChildWorks { get; set; } = new List<WorkDto>();
-        public List<WorkDto> ParentWorks { get; set; } = new List<WorkDto>();
+        public List<WorkDto> NextWorks { get; set; } = new List<WorkDto>();
+        public List<WorkDto> PrevWorks { get; set; } = new List<WorkDto>();
 
         //public decimal SumAddedCost => AddedChildrenCost + AddedCost;
 
@@ -68,12 +68,12 @@ namespace Entities.Dto
 
             if (nextWorks != null)
             {
-                ChildWorks.AddRange(nextWorks.Select(s => new WorkDto(s)));
+                NextWorks.AddRange(nextWorks.Select(s => new WorkDto(s)));
             }
 
             if (prevWorks != null)
             {
-                ParentWorks.AddRange(prevWorks.Select(s => new WorkDto(s)));
+                PrevWorks.AddRange(prevWorks.Select(s => new WorkDto(s)));
             }
         }
 
