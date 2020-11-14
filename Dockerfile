@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -21,7 +21,7 @@ RUN dotnet publish Rosatom.csproj -c Release -o ../out
 RUN dotnet ef database update
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/sdk:5.0
 ENV logPath='/var/log'
 ENV ASPNETCORE_ENVIRONMENT='Development'
 RUN apt-get update \
