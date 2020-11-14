@@ -119,7 +119,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 5)
+                    if (tmp <= 10)
                     {
                         continue;
                     }
@@ -157,7 +157,7 @@ namespace Repository
                 for (var k = 0; k < 4; k++)
                 {
                     var tmp = new Random().Next(1, 100);
-                    if (tmp <= 5)
+                    if (tmp <= 10)
                     {
                         continue;
                     }
