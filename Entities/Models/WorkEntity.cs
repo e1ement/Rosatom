@@ -22,7 +22,7 @@ namespace Entities.Models
         public decimal AddedCost { get; set; }
         public decimal AddedChildrenCost { get; set; }
         
-        public List<WorkEntity> NextWorks { get; set; }
-        public List<WorkEntity> PrevWorks { get; set; }
+        public List<WorkEntity> ChildWorks { get; set; }
+        public List<WorkEntity> ParentWorks { get; set; }
     }
 }
