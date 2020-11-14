@@ -122,6 +122,10 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    {
+                        continue;
+                    }
                     newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
                 }
 
@@ -155,6 +159,10 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    {
+                        continue;
+                    }
                     newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
                 }
 
@@ -188,6 +196,10 @@ namespace Repository
                     }
 
                     var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+                    if (newElement.NextWorks.Select(n => n.NextWorkId).Contains(id))
+                    {
+                        continue;
+                    }
                     newElement.NextWorks.Add(new WorkWorkEntity() { NextWorkId = id, PrevWorkId = newElement.Id });
                 }
 
@@ -224,8 +236,16 @@ namespace Repository
 
         public async Task CreateCollectionAsync(IEnumerable<WorkEntity> works)
         {
-            await CreateCollection(works);
-            await SaveChanges();
+            try
+            {
+                await CreateCollection(works);
+                await SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private static void SetDates(IEnumerable<WorkEntity> works)

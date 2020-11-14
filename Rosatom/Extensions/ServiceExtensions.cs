@@ -37,7 +37,7 @@ namespace Rosatom.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<RepositoryContext>(opts =>
-                opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
         }
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)
