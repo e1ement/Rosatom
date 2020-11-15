@@ -282,7 +282,7 @@ namespace Repository
             {
                 var possibleDateList =
                     entity.PrevWorks.Select(s => s.PlannedStartDate.AddDays(s.NormDuration)).ToList();
-                var maxPossibleDate = possibleDateList.Max(i => i);
+                var maxPossibleDate = possibleDateList.Min(i => i);
 
                 if (workForUpdate.NewPlannedStartDate.HasValue && workForUpdate.NewPlannedStartDate < maxPossibleDate)
                 {
@@ -293,13 +293,15 @@ namespace Repository
             entity.NewPlannedStartDate = workForUpdate.NewPlannedStartDate;
             if (workForUpdate.FactStartDate.HasValue)
                 entity.FactStartDate = workForUpdate.FactStartDate;
+            await SaveChanges();
+
             if (workForUpdate.NewPlannedStartDate != null)
                 foreach (var p in entity.NextWorks)
                 {
                     await GetNext(p.Id, workForUpdate.NewPlannedStartDate.Value.AddDays(entity.NormDuration));
                 }
 
-            return await SaveChanges();
+            return 1;
         }
 
         private async Task GetNext(Guid id, DateTime prevEndDate)
@@ -308,12 +310,14 @@ namespace Repository
                 .Include(e => e.NextWorks)
                 .FirstOrDefaultAsync();
 
-            if (prevEndDate > entity.PlannedStartDate)
+            if (prevEndDate < entity.PlannedStartDate)
             {
-                entity.PlannedStartDate = prevEndDate.AddDays(1);
+                entity.NewPlannedStartDate = prevEndDate.AddDays(1);
+                await SaveChanges();
+
                 foreach (var p in entity.NextWorks)
                 {
-                    await GetNext(p.Id, entity.PlannedStartDate.AddDays(entity.NormDuration));
+                    await GetNext(p.Id, entity.NewPlannedStartDate.Value.AddDays(entity.NormDuration));
                 }
             }
         }
