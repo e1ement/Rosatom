@@ -333,7 +333,7 @@ namespace Repository
                 }
             }
 
-            entity.NewPlannedStartDate = workForUpdate.NewPlannedStartDate;
+            entity.NewPlannedStartDate = workForUpdate.FactStartDate ?? workForUpdate.NewPlannedStartDate;
             if (workForUpdate.FactStartDate.HasValue)
                 entity.FactStartDate = workForUpdate.FactStartDate;
             await SaveChanges();
