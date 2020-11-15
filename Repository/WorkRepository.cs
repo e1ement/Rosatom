@@ -99,6 +99,7 @@ namespace Repository
             }
 
             j *= 45;
+            parentIdsList.Clear();
 
             for (var i = 0; i < j; i++)
             {
@@ -137,6 +138,7 @@ namespace Repository
             }
 
             j *= 5;
+            parentIdsList.Clear();
 
             for (var i = 0; i < j; i++)
             {
@@ -175,6 +177,7 @@ namespace Repository
             }
 
             //j *= 45;
+            //parentIdsList.Clear();
 
             //for (var i = 0; i < j; i++)
             //{
@@ -331,7 +334,7 @@ namespace Repository
                 .Include(e => e.NextWorks)
                 .FirstOrDefaultAsync();
 
-            if (prevEndDate < entity.PlannedStartDate)
+            if (prevEndDate > entity.PlannedStartDate)
             {
                 entity.NewPlannedStartDate = prevEndDate.AddDays(1);
                 await SaveChanges();
