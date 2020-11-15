@@ -302,7 +302,7 @@ namespace Repository
             var mainEntity = await FindByCondition(e => !e.NextWorks.Select(p => p.Id).Any(), trackChanges)
                 .Include(i => i.PrevWorks)
                 .FirstOrDefaultAsync();
-            var sum = await FindAll(false).Select(s => s.AddedCost).CountAsync();
+            var sum = await FindAll(false).Select(s => s.AddedCost).SumAsync();
             mainEntity.AddedCost = sum;
 
             return new WorkDto(mainEntity);
