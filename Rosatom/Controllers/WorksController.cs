@@ -37,6 +37,22 @@ namespace Rosatom.Controllers
             }
         }
 
+        [HttpGet("main")]
+        public async Task<IActionResult> GetMainWork()
+        {
+            try
+            {
+                var data = await _repository.WorkRepository.GetMainAsync(false);
+                
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(GetMainWork)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] WorkForUpdateDto workForUpdate)
         {

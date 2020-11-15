@@ -15,5 +15,6 @@ namespace Contracts
         Task CreateCollectionAsync(IEnumerable<WorkEntity> works);
         Task<int> UpdateAsync(WorkForUpdateDto workForUpdate);
         Task Recalculate();
+        Task<WorkDto> GetMainAsync(bool trackChanges);
     }
 }

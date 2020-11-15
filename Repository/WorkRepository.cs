@@ -297,6 +297,15 @@ namespace Repository
             await SaveChanges();
         }
 
+        public async Task<WorkDto> GetMainAsync(bool trackChanges)
+        {
+            var mainEntity = await FindByCondition(e => !e.NextWorks.Select(p => p.Id).Any(), trackChanges)
+                .Include(i => i.PrevWorks)
+                .FirstOrDefaultAsync();
+
+            return new WorkDto(mainEntity);
+        }
+
         public async Task<int> UpdateAsync(WorkForUpdateDto workForUpdate)
         {
             var entity = await FindByCondition(x => x.Id == workForUpdate.Id, true)
