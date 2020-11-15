@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Entities.Dto;
 
@@ -25,8 +26,9 @@ namespace Rosatom.Controllers
             try
             {
                 var data = await _repository.WorkRepository.GetByIdAsync(id, false);
-
-                return Ok(data);
+                var result = data.OrderBy(o => o.SumAddedCost);
+                
+                return Ok(result);
             }
             catch (Exception e)
             {
