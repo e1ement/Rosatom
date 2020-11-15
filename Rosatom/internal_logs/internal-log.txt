@@ -1006,3 +1006,25 @@
 2020-11-15 01:33:58.8969 Info Adding target FileTarget(Name=fileLogError)
 2020-11-15 01:33:58.8969 Info Adding target FileTarget(Name=fileLogFatal)
 2020-11-15 01:33:58.9687 Info Validating config: Targets=5, ConfigItems=75, FilePath=C:\Users\Administrator\Documents\Rosatom\Rosatom/nlog.config
+2020-11-15 03:38:56.7101 Info Auto loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll
+2020-11-15 03:38:56.9417 Info Loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll
+2020-11-15 03:38:57.3538 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.6.5.1409. Product version: 1.6.5+c05b105d8cd52581a50da2af91ebacf8d4bc8f0d. GlobalAssemblyCache: False
+2020-11-15 03:38:57.3637 Info Auto loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll succeeded!
+2020-11-15 03:38:57.3637 Info Message Template Auto Format enabled
+2020-11-15 03:38:57.4502 Info Adding target FileTarget(Name=fileLogDebug)
+2020-11-15 03:38:57.5042 Info Adding target FileTarget(Name=fileLogInfo)
+2020-11-15 03:38:57.5042 Info Adding target FileTarget(Name=fileLogWarn)
+2020-11-15 03:38:57.5234 Info Adding target FileTarget(Name=fileLogError)
+2020-11-15 03:38:57.5321 Info Adding target FileTarget(Name=fileLogFatal)
+2020-11-15 03:38:57.5881 Info Validating config: Targets=5, ConfigItems=75, FilePath=C:\Users\Administrator\Documents\Rosatom\Rosatom/nlog.config
+2020-11-15 03:39:59.7802 Info Auto loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll
+2020-11-15 03:39:59.8708 Info Loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll
+2020-11-15 03:40:00.0217 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.6.5.1409. Product version: 1.6.5+c05b105d8cd52581a50da2af91ebacf8d4bc8f0d. GlobalAssemblyCache: False
+2020-11-15 03:40:00.0344 Info Auto loading assembly file: C:\Users\Administrator\Documents\Rosatom\Rosatom\bin\Debug\net5.0\NLog.Extensions.Logging.dll succeeded!
+2020-11-15 03:40:00.0488 Info Message Template Auto Format enabled
+2020-11-15 03:40:00.1399 Info Adding target FileTarget(Name=fileLogDebug)
+2020-11-15 03:40:00.2254 Info Adding target FileTarget(Name=fileLogInfo)
+2020-11-15 03:40:00.2366 Info Adding target FileTarget(Name=fileLogWarn)
+2020-11-15 03:40:00.2531 Info Adding target FileTarget(Name=fileLogError)
+2020-11-15 03:40:00.2531 Info Adding target FileTarget(Name=fileLogFatal)
+2020-11-15 03:40:00.3500 Info Validating config: Targets=5, ConfigItems=75, FilePath=C:\Users\Administrator\Documents\Rosatom\Rosatom/nlog.config

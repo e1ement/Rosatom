@@ -240,6 +240,7 @@ namespace Repository
                 var entity = await FindByCondition(e => e.Id == id, trackChanges)
                     .Include(e => e.PrevWorks)
                     .FirstOrDefaultAsync();
+                if (entity == null) return  new List<WorkDto>();
 
                 return entity.PrevWorks.Select(workEntity => new WorkDto(workEntity)).ToList();
             }
@@ -270,6 +271,11 @@ namespace Repository
                 .Include(i => i.NextWorks)
                 .Include(i => i.PrevWorks)
                 .FirstOrDefaultAsync();
+            if (entity.FactStartDate.HasValue && workForUpdate.FactStartDate.HasValue &&
+                entity.FactStartDate.Value != workForUpdate.FactStartDate)
+            {
+                return 0;
+            }
 
             var parentWorks = entity.PrevWorks;
             if (parentWorks != null && parentWorks.Any())
@@ -287,10 +293,29 @@ namespace Repository
             entity.NewPlannedStartDate = workForUpdate.NewPlannedStartDate;
             if (workForUpdate.FactStartDate.HasValue)
                 entity.FactStartDate = workForUpdate.FactStartDate;
-
-            //TODO: получить все зависимые работы и апдейтнуть
+            if (workForUpdate.NewPlannedStartDate != null)
+                foreach (var p in entity.NextWorks)
+                {
+                    await GetNext(p.Id, workForUpdate.NewPlannedStartDate.Value.AddDays(entity.NormDuration));
+                }
 
             return await SaveChanges();
+        }
+
+        private async Task GetNext(Guid id, DateTime prevEndDate)
+        {
+            var entity = await FindByCondition(e => e.Id == id, true)
+                .Include(e => e.NextWorks)
+                .FirstOrDefaultAsync();
+
+            if (prevEndDate > entity.PlannedStartDate)
+            {
+                entity.PlannedStartDate = prevEndDate.AddDays(1);
+                foreach (var p in entity.NextWorks)
+                {
+                    await GetNext(p.Id, entity.PlannedStartDate.AddDays(entity.NormDuration));
+                }
+            }
         }
 
         private static void SetDates(List<WorkEntity> works)
@@ -321,7 +346,7 @@ namespace Repository
 
             foreach (var work in prevWorks)
             {
-                work.PlannedStartDate = date.AddDays(-1).AddDays(work.NormDuration);
+                work.PlannedStartDate = date.AddDays(-1).AddDays(-1 * work.NormDuration);
             }
 
             var minDate = prevWorks.Min(p => p.PlannedStartDate);
