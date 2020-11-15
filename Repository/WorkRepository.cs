@@ -239,6 +239,7 @@ namespace Repository
 
                 var entity = await FindByCondition(e => e.Id == id, trackChanges)
                     .Include(e => e.PrevWorks)
+                    .ThenInclude(ti => ti.PrevWorks)
                     .FirstOrDefaultAsync();
                 if (entity == null) return  new List<WorkDto>();
 

@@ -19,11 +19,12 @@ namespace Entities.Dto
         public decimal MinimalDurationCost { get; set; }
         public decimal AddedCost { get; set; }
         public decimal AddedChildrenCost { get; set; }
+        public bool HasChildren { get; set; }
 
         public List<WorkDto> NextWorks { get; set; } = new List<WorkDto>();
         public List<WorkDto> PrevWorks { get; set; } = new List<WorkDto>();
 
-        //public decimal SumAddedCost => AddedChildrenCost + AddedCost;
+        public decimal SumAddedCost => AddedChildrenCost + AddedCost;
 
         public WorkDto(WorkEntity entity)
         {
@@ -44,6 +45,7 @@ namespace Entities.Dto
             AddedCost = entity.AddedCost;
             AddedChildrenCost = entity.AddedChildrenCost;
             NewPlannedStartDate = entity.NewPlannedStartDate;
+            HasChildren = entity.PrevWorks.Any();
         }
 
         public WorkDto(WorkEntity entity, List<WorkEntity> nextWorks, List<WorkEntity> prevWorks)
@@ -65,6 +67,7 @@ namespace Entities.Dto
             AddedCost = entity.AddedCost;
             AddedChildrenCost = entity.AddedChildrenCost;
             NewPlannedStartDate = entity.NewPlannedStartDate;
+            HasChildren = entity.PrevWorks.Any();
 
             if (nextWorks != null)
             {
