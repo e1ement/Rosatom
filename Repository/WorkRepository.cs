@@ -266,6 +266,26 @@ namespace Repository
             }
         }
 
+        public async Task Recalculate()
+        {
+            var entities = await FindAll(true)
+                .ToListAsync();
+
+            foreach (var e in entities.Where(e => e.PlannedStartDate < e.NewPlannedStartDate))
+            {
+                if (e.NewPlannedStartDate != null)
+                {
+                    var daysDifference = e.NewPlannedStartDate.Value.Subtract(e.PlannedStartDate).Days;
+
+                    e.AddedCost = daysDifference > 0
+                        ? e.IncDayCost * daysDifference
+                        : e.DecDayCost * daysDifference;
+                }
+            }
+
+            await SaveChanges();
+        }
+
         public async Task<int> UpdateAsync(WorkForUpdateDto workForUpdate)
         {
             var entity = await FindByCondition(x => x.Id == workForUpdate.Id, true)

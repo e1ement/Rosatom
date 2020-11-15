@@ -46,6 +46,8 @@ namespace Rosatom.Controllers
                     return BadRequest();
                 }
 
+                await _repository.WorkRepository.Recalculate();
+
                 return NoContent();
             }
             catch (Exception e)
