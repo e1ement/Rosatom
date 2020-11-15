@@ -117,21 +117,25 @@ namespace Repository
                     PrevWorks = new List<WorkEntity>()
                 };
 
-                for (var k = 0; k < 4; k++)
+                if (parentIdsList.Any())
                 {
-                    var tmp = new Random().Next(1, 100);
-                    if (tmp <= 10)
+                    for (var k = 0; k < 4; k++)
                     {
-                        continue;
-                    }
+                        var tmp = new Random().Next(1, 100);
+                        if (tmp <= 10)
+                        {
+                            continue;
+                        }
 
-                    var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.NextWorks.Any(n => n.Id == id))
-                    {
-                        continue;
+                        var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+                        if (newElement.NextWorks.Any(n => n.Id == id))
+                        {
+                            continue;
+                        }
+                        newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                     }
-                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
+                
 
                 result.Add(newElement);
                 parentIdsList.Add(newElement.Id);
@@ -156,21 +160,25 @@ namespace Repository
                     PrevWorks = new List<WorkEntity>()
                 };
 
-                for (var k = 0; k < 4; k++)
+                if (parentIdsList.Any())
                 {
-                    var tmp = new Random().Next(1, 100);
-                    if (tmp <= 10)
+                    for (var k = 0; k < 4; k++)
                     {
-                        continue;
-                    }
+                        var tmp = new Random().Next(1, 100);
+                        if (tmp <= 10)
+                        {
+                            continue;
+                        }
 
-                    var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
-                    if (newElement.NextWorks.Any(n => n.Id == id))
-                    {
-                        continue;
+                        var id = parentIdsList[new Random().Next(0, parentIdsList.Count - 1)];
+                        if (newElement.NextWorks.Any(n => n.Id == id))
+                        {
+                            continue;
+                        }
+                        newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                     }
-                    newElement.NextWorks.Add(result.FirstOrDefault(r => r.Id == id));
                 }
+
 
                 result.Add(newElement);
                 parentIdsList.Add(newElement.Id);
