@@ -8,6 +8,7 @@ RUN dotnet restore Rosatom.csproj
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="${PATH}:/root/.dotnet/tools"
 ENV ASPNETCORE_ENVIRONMENT='Development'
+ENV ASPNETCORE_URLS http://*:5050
 ENV logPath='/var/log'
 
 # Copy everything else and build
@@ -24,6 +25,7 @@ RUN dotnet ef database update
 FROM mcr.microsoft.com/dotnet/sdk:5.0
 ENV logPath='/var/log'
 ENV ASPNETCORE_ENVIRONMENT='Development'
+ENV ASPNETCORE_URLS http://*:5050
 RUN apt-get update \
     && apt-get install -y --allow-unauthenticated \
         libc6-dev \
